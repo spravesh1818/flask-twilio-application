@@ -1,0 +1,5 @@
+.idea/
+bin/
+lib/
+flask_browser_call/__pycache__/
+pyvenv.cfg
