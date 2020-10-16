@@ -17,6 +17,16 @@
               Connecting to Twilio...
             </div>
 
+
+              <p><strong>Caller Phone Number</strong></p>
+                <div class="well well-sm">
+                <select class="form-control" onchange="changeActiveNumber(this.value)">
+                    {% for phonenumber in phonenumbers %}
+                    <option value="{{ phonenumber.phone_number }}">{{ phonenumber.phone_number }}</option>
+                    {% endfor %}
+                </select>
+                </div>
+
               <p><strong>Phone Number</strong></p>
                 <div class="well well-sm">
                     <input class="form-control" type="text" name="phonenumber" id="phonenumber" placeholder="Phone Number"/>
@@ -48,5 +58,26 @@
         var phonenumber=$('#phonenumber').val();
         callCustomer(phonenumber);
     }
+
+
+    function changeActiveNumber(phonenumber){
+    console.log(phonenumber)
+    data={'activenumber':phonenumber};
+
+    $.ajax({
+      type: 'POST',
+      url: "/changeactivenumber",
+      contentType: "application/json; charset=utf-8",
+      data: JSON.stringify(data),
+      success: function(result){
+        //message sent successfully and reload
+          console.log("Received data");
+      }
+    });
+
+}
+
+
+
     </script>
 {% endblock %}

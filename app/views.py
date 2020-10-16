@@ -11,9 +11,17 @@ from twilio.twiml.voice_response import VoiceResponse, Dial
 
 @app.route('/')
 def root():
-    form = SupportTicketForm()
-    return render_template('home.html', form=form)
 
+    return render_template('home.html')
+
+
+
+@app.route('/changeactivenumber',methods=['GET','POST'])
+def changeactivenumber():
+    if request.method=='POST':
+
+        app.config['TWILIO_NUMBER']=request.json['activenumber']
+        return {'msg':'Changed successfully'}
 
 @app.route('/tickets', methods=['GET', 'POST'])
 def new_ticket():
@@ -30,7 +38,12 @@ def new_ticket():
 
 @app.route('/dashboard', methods=['GET'])
 def dashboard():
-    return render_template('support_dashboard.html')
+    account_sid = app.config['TWILIO_ACCOUNT_SID']
+    auth_token = app.config['TWILIO_AUTH_TOKEN']
+    client = Client(account_sid, auth_token)
+    incoming_phone_numbers = client.incoming_phone_numbers.list(limit=20)
+    print(incoming_phone_numbers)
+    return render_template('support_dashboard.html',phonenumbers=incoming_phone_numbers)
 
 
 @app.route('/support/token', methods=['GET'])
@@ -64,7 +77,6 @@ def get_token():
 def call():
     """Returns TwiML instructions to Twilio's POST requests"""
     response = VoiceResponse()
-
     dial = Dial(callerId=app.config['TWILIO_NUMBER'])
     # If the browser sent a phoneNumber param, we know this request
     # is a support agent trying to call a customer's phone
@@ -80,22 +92,26 @@ def call():
 
 @app.route('/sms',methods=['GET','POST'])
 def sms():
-    account_sid = 'AC32d46f59ea6199c04e52ea1800e79747'
-    auth_token = '89ed211dcbfbded5d41ded5c9d4b11e4'
-
-    my_phone_number = '+61480030084'
+    account_sid = app.config['TWILIO_ACCOUNT_SID']
+    auth_token = app.config['TWILIO_AUTH_TOKEN']
     client = Client(account_sid, auth_token)
+
+    incoming_phone_numbers = client.incoming_phone_numbers.list(limit=20)
+
+
+
     if request.method=='GET':
         messages = client.messages.list()
-        return render_template('sms.html',messages=messages)
+        return render_template('sms.html',messages=messages,phonenumbers=incoming_phone_numbers)
 
     if request.method=='POST':
         data=request.json
         phone_number=data['phonenumber']
+        sender=data['sender']
         message_field=data['message']
         message = client.messages.create(
             body=message_field,
-            from_=my_phone_number,
+            from_=sender,
             to=phone_number
         )
         return {"msg": "Message sent successfully","sid":message.sid}

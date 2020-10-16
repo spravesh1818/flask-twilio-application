@@ -12,6 +12,16 @@
             <h3 class="panel-title">Send An Sms From Here</h3>
           </div>
           <div class="panel-body">
+              <p><strong>Sender Phone Number</strong></p>
+                <div class="well well-sm">
+                <select class="form-control" id="message_sender">
+                    {% for phonenumber in phonenumbers %}
+                    <option value="{{ phonenumber.phone_number }}">{{ phonenumber.phone_number }}</option>
+                    {% endfor %}
+                </select>
+                </div>
+
+
             <p><strong>Receipient Phone Number</strong></p>
                 <div class="well well-sm">
                     <input class="form-control" type="text" id="message_number" placeholder="Phone Number"/>

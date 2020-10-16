@@ -9,6 +9,7 @@ var answerButton = $(".answer-button");
 var callSupportButton = $(".call-support-button");
 var hangUpButton = $(".hangup-button");
 var callCustomerButtons = $(".call-customer-button");
+var caller=$('')
 
 /* Helper function to update the call status bar */
 function updateCallStatus(status) {
@@ -65,7 +66,7 @@ Twilio.Device.disconnect(function(connection) {
 /* Callback for when Twilio Client receives a new incoming call */
 Twilio.Device.incoming(function(connection) {
     updateCallStatus("Incoming support call");
-    callSupportButton.hide();
+    callSupportButton.prop('disabled',true);
     // Set a callback to be executed when the connection is accepted
     connection.accept(function() {
         updateCallStatus("In call with customer");
@@ -81,10 +82,14 @@ Twilio.Device.incoming(function(connection) {
 /* Call a customer from a support ticket */
 function callCustomer(phoneNumber) {
     updateCallStatus("Calling " + phoneNumber + "...");
-
+    console.log("Call customer hit");
     var params = {"phoneNumber": phoneNumber};
     Twilio.Device.connect(params);
 }
+
+
+
+
 
 /* Call the support_agent from the home page */
 function callSupport() {
