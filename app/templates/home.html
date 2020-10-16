@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+
+
+{% block title %}Home{% endblock title %}
+
+{% block content %}
+
+
+  <div class="container">
+
+    <div class="row">
+      Home Page
+    </div>
+  </div>
+
+
+<script>
+    function requestCall(){
+        var phonenumber=$('#phonenumber').val();
+        callCustomer(phonenumber);
+    }
+    </script>
+{% endblock %}

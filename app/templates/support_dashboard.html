@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+
+{% block title %}Support Dashboard{% endblock title %}
+
+{% block content %}
+  <div class="container">
+    <h2>Call Or Answer A Call Here</h2>
+    <div class="row">
+        <div class="col-md-10">
+        <div class="panel panel-info client-controls">
+          <div class="panel-heading">
+            <h3 class="panel-title">Connect To A Phone Number</h3>
+          </div>
+          <div class="panel-body">
+            <p><strong>Status</strong></p>
+            <div class="well well-sm" id="call-status">
+              Connecting to Twilio...
+            </div>
+
+              <p><strong>Phone Number</strong></p>
+                <div class="well well-sm">
+                    <input class="form-control" type="text" name="phonenumber" id="phonenumber" placeholder="Phone Number"/>
+                </div>
+
+
+              <button class="btn btn-lg btn-primary call-support-button" onclick="requestCall()">
+               <span class="glyphicon glyphicon-earphone" aria-hidden="true"></span> Call
+              </button>
+
+
+              <button class="btn btn-lg btn-danger hangup-button" disabled onclick="hangUp()">Hang up</button>
+
+              <button class="btn btn-lg btn-success answer-button" disabled>
+                  <span class="glyphicon glyphicon-earphone" aria-hidden="true"></span>Answer call
+              </button>
+          </div>
+        </div>
+
+      </div>
+
+
+
+    </div>
+  </div>
+
+    <script>
+    function requestCall(){
+        var phonenumber=$('#phonenumber').val();
+        callCustomer(phonenumber);
+    }
+    </script>
+{% endblock %}

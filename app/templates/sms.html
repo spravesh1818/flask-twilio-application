@@ -1,0 +1,68 @@
+{% extends "layout.html" %}
+
+{% block title %}Support Dashboard{% endblock title %}
+
+{% block content %}
+  <div class="container">
+    <h2>Message Center</h2>
+    <div class="row">
+        <div class="col-md-6">
+        <div class="panel panel-info client-controls">
+          <div class="panel-heading">
+            <h3 class="panel-title">Send An Sms From Here</h3>
+          </div>
+          <div class="panel-body">
+            <p><strong>Receipient Phone Number</strong></p>
+                <div class="well well-sm">
+                    <input class="form-control" type="text" id="message_number" placeholder="Phone Number"/>
+                </div>
+              <p><strong>Your Message</strong></p>
+                <div class="well well-sm">
+                    <textarea class="form-control" type="text" id="message_text" placeholder="Your Message Here"></textarea>
+                </div>
+
+              <button class="btn btn-lg btn-success answer-button" id="send_message_btn" onclick="send_message()">
+                  Send Message
+              </button>
+          </div>
+        </div>
+      </div>
+        <div class="col-md-6">
+        <div class="panel panel-info client-controls">
+          <div class="panel-heading">
+            <h3 class="panel-title">Inbox</h3>
+          </div>
+          <div class="panel-body">
+                <table id="inbox_table" class="display">
+                    <thead>
+                        <tr>
+                            <th>Sender</th>
+                            <th>Receiver</th>
+                            <th>Message</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {%for  message in messages %}
+                             <tr>
+                                <td>{{ message.from_ }}</td>
+                                <td>{{ message.to }}</td>
+                                <td>{{ message.body }}</td>
+                                <td>{{ message.date_updated }}</td>
+                            </tr>
+
+
+                        {% endfor %}
+                    </tbody>
+                </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+
+
+
+  </div>
+{% endblock %}
